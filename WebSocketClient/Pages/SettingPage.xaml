@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebSocketClient.Pages.SettingPage"
+             Title="SettingPage">
+    <VerticalStackLayout>
+        <Label 
+            Text="ID"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry
+            x:Name="Entry_ID"
+            Placeholder="ID"
+            />
+        <Label 
+            Text="PW"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry
+            x:Name="Entry_PW"
+            Placeholder="PW"
+            />
+        <Button
+            Text="Save"
+            Clicked="OnSettingSaveClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
+   
