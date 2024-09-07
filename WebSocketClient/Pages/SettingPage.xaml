@@ -3,27 +3,22 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 x:Class="WebSocketClient.Pages.SettingPage"
 			 Title="SettingPage">
-	<VerticalStackLayout>
-		<Label 
-			Text="ID"
-			VerticalOptions="Center" 
-			HorizontalOptions="Center" />
-		<Entry
-			x:Name="Entry_ID"
-			Placeholder="ID"
-			/>
-		<Label 
-			Text="PW"
-			VerticalOptions="Center" 
-			HorizontalOptions="Center" />
-		<Entry
-			x:Name="Entry_PW"
-			Placeholder="PW"
-			IsPassword="True"
-			/>
-		<Button
-			Text="Save"
-			Clicked="OnSettingSaveClicked"/>
-	</VerticalStackLayout>
+    <StackLayout Padding="20">
+        <Label Text="Settings" FontSize="24" HorizontalOptions="Center" />
+
+        <!-- 사용자 ID 입력 -->
+        <Label Text="User ID:" />
+        <Entry x:Name="UserIdEntry" Placeholder="Enter user ID" />
+
+        <!-- 비밀번호 입력 -->
+        <Label Text="Password:" />
+        <Entry x:Name="PasswordEntry" Placeholder="Enter password" IsPassword="True" />
+
+        <!-- 설정 저장 버튼 -->
+        <Button Text="Save" Clicked="OnSaveButtonClicked" />
+
+        <!-- 저장 성공 또는 실패 메시지 -->
+        <Label x:Name="StatusMessage" TextColor="Green" IsVisible="False" />
+    </StackLayout>
 </ContentPage>
    
