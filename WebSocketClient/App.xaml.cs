@@ -1,4 +1,6 @@
-﻿namespace WebSocketClient
+﻿using WebSocketClient.Pages;
+
+namespace WebSocketClient
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
-        }
+			MainPage = new NavigationPage(new LoginPage(true));
+		}
     }
 }

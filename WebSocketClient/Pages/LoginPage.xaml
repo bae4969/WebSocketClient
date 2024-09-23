@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebSocketClient.Pages.LoginPage">
+
+	<!-- 전체 페이지를 중간에 정렬 -->
+	<Grid Padding="30, 0, 30, 100" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Label Text="Login"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Grid.Row="0"
+               Margin="0, 0, 0, 30" />
+
+		<Frame Grid.Row="1"
+               BackgroundColor="#1C1C1C"
+               CornerRadius="10"
+               HasShadow="False"
+               Padding="10"
+               Margin="0, 10, 0, 10">
+			<Entry x:Name="UserIdEntry"
+                   Placeholder="User ID"
+                   FontSize="18"
+                   Margin="10, 0" />
+		</Frame>
+
+		<Frame Grid.Row="2"
+               BackgroundColor="#1C1C1C"
+               CornerRadius="10"
+               HasShadow="False"
+               Padding="10"
+               Margin="0, 10, 0, 10">
+			<Entry x:Name="PasswordEntry"
+                   Placeholder="Password"
+                   IsPassword="True"
+                   FontSize="18"
+                   Margin="10, 0" />
+		</Frame>
+
+		<StackLayout Grid.Row="3"
+                     Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand" 
+                     VerticalOptions="Start"
+			        HeightRequest="50"
+			        Margin="20,10">
+			<CheckBox x:Name="AutoLoginCheckBox"
+					  WidthRequest="20"
+					  HeightRequest="20"
+					  VerticalOptions="Center"
+					  HorizontalOptions="Start"/>
+			<Label Text="Remember me"
+                   FontSize="16"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Margin="10,0,0,0" />
+		</StackLayout>
+
+		<Button 
+            x:Name="LoginButton"
+			Text="Login"
+			FontSize="18"
+            FontAttributes="Bold"
+            CornerRadius="25"
+            HeightRequest="50"
+            HorizontalOptions="FillAndExpand"
+            Grid.Row="4"
+            Margin="0, 20"
+            Clicked="OnLoginButtonClicked" />
+	</Grid>
+</ContentPage>
