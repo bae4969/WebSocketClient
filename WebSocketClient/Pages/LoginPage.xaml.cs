@@ -31,17 +31,10 @@ public partial class LoginPage : ContentPage
 			return;
 		}
 
-		var ret = await BaeWebSocketClient.Connect();
-		if (ret.Item1 == 200)
+		var ret = await BaeWebSocketClient.Connect(UserIdEntry.Text, PasswordEntry.Text, AutoLoginCheckBox.IsChecked);
+		if (!ret)
 		{
-			Preferences.Set("user_id", UserIdEntry.Text);
-			Preferences.Set("user_pw", PasswordEntry.Text);
-			Preferences.Set("is_auto_login", AutoLoginCheckBox.IsChecked);
-			Application.Current.MainPage = new AppShell();
-		}
-		else
-		{
-			await Application.Current.MainPage.DisplayAlert("Error", $"Fail to connect ({ret.Item2})", "OK");
+			await Application.Current.MainPage.DisplayAlert("Error", $"Fail to send", "OK");
 		}
 	}
 }

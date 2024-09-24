@@ -4,11 +4,25 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:WebSocketClient.Pages"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="WebSocketClient">
 
+	<Shell.FlyoutHeader>
+		<Grid Padding="10" BackgroundColor="#333333">
+			<!-- 왼쪽에 사용자 ID 표시 -->
+			<Label Text="{Binding UserId}" 
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center" />
 
-    <TabBar>
+			<!-- 오른쪽에 로그아웃 버튼 -->
+			<Button Text="Logout" 
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Clicked="OnLogoutButtonClicked" />
+		</Grid>
+	</Shell.FlyoutHeader>
+	
+	<TabBar>
         <Tab Title="Home" Icon="home_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>

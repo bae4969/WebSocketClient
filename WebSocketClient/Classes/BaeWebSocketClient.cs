@@ -1,160 +1,184 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketClient.Pages;
+using RecvFuncType = System.Func<Newtonsoft.Json.Linq.JObject, System.Threading.Tasks.Task>;
 
 namespace WebSocketClient.Classes
 {
 	public static class BaeWebSocketClient
 	{
-		private static ClientWebSocket _webSocket = new();
-		private static string _id;
-		private static string _pw;
-		private static Uri _serverUri = new("ws://BaeIptimeDDNSAddress.iptime.org:49693/bae");
-		private static bool _isConnected = false;
-		private static bool _normalDisconnect = false;
-		private static CancellationTokenSource _cancellationTokenSource = new();
+		private static Uri _server_uri = new("ws://BaeIptimeDDNSAddress.iptime.org:49693/bae");
+		private static ClientWebSocket _ws = new();
+		private static CancellationTokenSource _cancel_srouce = new();
+		private static ConcurrentDictionary<string, RecvFuncType?> _wait_service = new();
+		private static bool _is_logined = false;
 
 		// WebSocket 연결 함수
-		public static async Task<Tuple<int, string>> Connect()
+		public static async Task<bool> Connect(string id, string pw, bool isAutoLogin)
 		{
-			_id = Preferences.Get("user_id", "");
-			_pw = Preferences.Get("user_pw", "");
-
-			if (_webSocket.State == WebSocketState.Open)
-			{
-				await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Reconnecting", CancellationToken.None);
-			}
-
 			try
 			{
-				_webSocket = new();
-				await _webSocket.ConnectAsync(_serverUri, CancellationToken.None);
-				_isConnected = true;
+				await Disconnect();
+				_ws = new();
+				_cancel_srouce = new();
+				await _ws.ConnectAsync(_server_uri, CancellationToken.None);
+				_ = FuncRecvLoop();
 
-				JObject req_dict = new()
+				var req_dict = new JObject()
 				{
-					{ "id", _id },
-					{ "pw", BitConverter.ToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(_pw))).Replace("-", "").ToLower() }
+					{ "id", id },
+					{ "pw", BitConverter.ToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pw))).Replace("-", "").ToLower() }
 				};
-				var rep_msg = await RequestService("req", "login", "login", req_dict);
-				var ret = new Tuple<int, string>(
-					rep_msg["result"].Value<int>(),
-					rep_msg["msg"].ToString()
-					);
-				if (ret.Item1 == 200)
-				{
-					_isConnected = true;
-					_cancellationTokenSource = new();
-					_ = StartPingLoop();
-				}
-				else
-				{
-					_isConnected = false;
-				}
+				RecvFuncType recvFunc = async (recv_msg) => {
+					var ret_code = recv_msg["result"].Value<int>();
+					var ret_msg = recv_msg["msg"].ToString();
 
-				return ret;
+					if (ret_code == 200)
+					{
+						_ = FuncPingLoop();
+						Preferences.Set("user_id", id);
+						Preferences.Set("user_pw", pw);
+						Preferences.Set("is_auto_login", isAutoLogin);
+						Application.Current.MainPage = new AppShell();
+						_is_logined = true;
+					}
+					else
+					{
+						_is_logined = false;
+						await Application.Current.MainPage.DisplayAlert("Error", $"Fail to connect ({ret_msg})", "OK");
+					}
+				};
+				return await Send("auth", "login", req_dict, recvFunc);
 			}
 			catch (Exception ex)
 			{
-				_isConnected = false;
-				return new Tuple<int, string>( 400, $"Connection failed: {ex.Message}");
+				return false;
 			}
-		}
-
-		// 주기적으로 Ping을 보내는 함수
-		public static async Task StartPingLoop()
-		{
-			var pingInterval = TimeSpan.FromSeconds(3); // Ping을 보낼 주기
-			var cancellationToken = _cancellationTokenSource.Token;
-
-			while (_isConnected && _webSocket.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
-			{
-				try
-				{
-					var jsonObject = new JObject
-					{
-						{ "type", "set" },
-						{ "service", "ping" },
-						{ "work", "ping" },
-						{ "data", new JObject() }
-					};
-					var encodedMessage = Encoding.UTF8.GetBytes(jsonObject.ToString());
-					var sendBuffer = new ArraySegment<byte>(encodedMessage, 0, encodedMessage.Length);
-
-					// 실제 Ping 메시지 전송
-					await _webSocket.SendAsync(sendBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
-					Console.WriteLine("Ping sent.");
-
-					// 다음 Ping까지 대기
-					await Task.Delay(pingInterval, cancellationToken);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($"Ping failed: {ex.Message}");
-					break;
-				}
-			}
-
-			if (_isConnected)
-			{
-				await Application.Current.MainPage.DisplayAlert("Error", $"Disconnected with server", "OK");
-				Application.Current.MainPage = new NavigationPage(new LoginPage());
-			}
-			_isConnected = false;
 		}
 
 		// WebSocket 닫기
 		public static async Task Disconnect()
 		{
-			if (_webSocket.State == WebSocketState.Open)
+			_cancel_srouce.Cancel();
+			if (_ws.State == WebSocketState.Open)
 			{
-				_isConnected = false;
-				_cancellationTokenSource.Cancel();
-				await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Disconnecting", CancellationToken.None);
+				try
+				{
+					await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Reconnecting", CancellationToken.None);
+				}
+				finally
+				{
+					_ws.Dispose();
+				}
+			}
+
+			if (_is_logined)
+			{
+				_is_logined = false;
+				await Application.Current.MainPage.DisplayAlert("Error", $"Disconnected with server", "OK");
+				Application.Current.MainPage = new NavigationPage(new LoginPage());
+			}
+		}
+
+
+		// 주기적으로 Ping을 보내는 함수
+		private static async Task FuncPingLoop()
+		{
+			var cancel_token = _cancel_srouce.Token;
+			var ping_interval = TimeSpan.FromSeconds(3); // Ping을 보낼 주기
+			var ping_dict = new JObject
+			{
+				{ "service", "auth" },
+				{ "work", "ping" },
+				{ "data", new JObject() }
+			};
+
+			while (_ws.State == WebSocketState.Open && !cancel_token.IsCancellationRequested)
+			{
+				try
+				{
+					await Send("auth", "ping", ping_dict, null);
+					await Task.Delay(ping_interval, cancel_token);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.ToString());
+					break;
+				}
+			}
+
+			Disconnect();
+		}
+
+		private static async Task FuncRecvLoop()
+		{
+			var cancel_token = _cancel_srouce.Token;
+			var buffer = new ArraySegment<byte>(new byte[1024]);
+
+			while (_ws.State == WebSocketState.Open && !cancel_token.IsCancellationRequested)
+			{
+				try
+				{
+					var mem_stream = new MemoryStream();
+					WebSocketReceiveResult result;
+
+					do
+					{
+						result = await _ws.ReceiveAsync(buffer, cancel_token);
+						mem_stream.Write(buffer.Array, buffer.Offset, result.Count);
+					} while (!result.EndOfMessage);
+
+					mem_stream.Seek(0, SeekOrigin.Begin);
+
+					var reader = new StreamReader(mem_stream, Encoding.UTF8);
+					var recv_msg = await reader.ReadToEndAsync();
+
+					var recv_data = JObject.Parse(recv_msg);
+					if (_wait_service.TryRemove(recv_data["service"].ToString(), out var func))
+						func?.Invoke(recv_data);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.ToString());
+					break;
+				}
 			}
 		}
 
 		// 서비스 요청 및 응답 처리
-		public static async Task<JObject> RequestService(string type, string service_name, string work_name, JObject req_dict)
+		public static async Task<bool> Send(string service_name, string work_name, JObject req_dict, RecvFuncType? recv_func)
 		{
+			var cancel_token = _cancel_srouce.Token;
+			bool is_added = false;
 			try
 			{
+				if (!_wait_service.TryAdd(service_name, recv_func)) return false;
+				is_added = true;
+
 				var jsonObject = new JObject
 				{
-					{ "type", type },
 					{ "service", service_name },
 					{ "work", work_name },
 					{ "data", req_dict }
 				};
-				var encodedMessage = Encoding.UTF8.GetBytes(jsonObject.ToString());
-				var sendBuffer = new ArraySegment<byte>(encodedMessage, 0, encodedMessage.Length);
+				var encoded_msg = Encoding.UTF8.GetBytes(jsonObject.ToString());
+				var buffer = new ArraySegment<byte>(encoded_msg, 0, encoded_msg.Length);
+				await _ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancel_token);
 
-				// 메시지 전송
-				await _webSocket.SendAsync(sendBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
-
-				// 메시지 수신
-				var recvBuffer = new ArraySegment<byte>(new byte[1024]);
-				var result = await _webSocket.ReceiveAsync(recvBuffer, CancellationToken.None);
-
-				// 수신된 메시지 처리
-				var receivedMessage = Encoding.UTF8.GetString(recvBuffer.Array, 0, result.Count);
-				return JObject.Parse(receivedMessage);
+				return true;
 			}
 			catch (Exception ex)
 			{
-				return new JObject
-				{
-					{ "type", "rep" },
-					{ "result", 401 },
-					{ "msg", ex.Message },
-					{ "data", new JArray() },
-				};
+				if (is_added) _wait_service.TryRemove(service_name, out _);
+				Console.WriteLine($"Fail to send {ex.ToString()} ");
+				return false;
 			}
 		}
 	}

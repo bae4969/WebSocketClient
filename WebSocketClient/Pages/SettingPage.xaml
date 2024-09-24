@@ -3,10 +3,6 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 x:Class="WebSocketClient.Pages.SettingPage"
 			 Title="SettingPage">
-	<VerticalStackLayout>
-		<Button
-            Text="Logout"
-            Clicked="OnLogoutButtonClicked"/>
-	</VerticalStackLayout>
+	
 </ContentPage>
    
