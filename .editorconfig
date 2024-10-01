@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0058: 식 값은 절대 사용되지 않습니다.
+dotnet_diagnostic.IDE0058.severity = silent

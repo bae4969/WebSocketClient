@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebSocketClient.Pages.WolPage"
+             Title="WolPage">
+
+	<Grid Padding="10" Margin="100">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!-- Picker (리스트 박스) -->
+		<Picker x:Name="WolDeviceListPicker"
+                Title="Device List"
+				Grid.Row="0"
+				Margin="0, 0, 0, 20"
+				HorizontalOptions="FillAndExpand"
+				VerticalOptions="CenterAndExpand">
+			<Picker.Items>
+				
+			</Picker.Items>
+		</Picker>
+
+		<!-- Button -->
+		<Button Text="Execute"
+				Grid.Row="1"
+				HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Clicked="OnWolExecuteClicked"/>
+
+	</Grid>
+</ContentPage>

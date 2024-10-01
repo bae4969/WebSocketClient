@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebSocketClient.Pages.StockPage"
+             xmlns:views="clr-namespace:WebSocketClient.Views"
+             Title="StockPage">
+
+	<Grid Padding="10">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="60"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="70"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="80"/>
+		</Grid.RowDefinitions>
+
+		<Grid 
+			Grid.Row="0"
+			Grid.ColumnSpan="3"
+			Padding="0, 0, 0, 10">
+				
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+
+			<Border 
+				Grid.Row="0"
+				Grid.Column="0"
+				Margin="0, 0, 5, 0"
+				VerticalOptions="FillAndExpand"
+				HorizontalOptions="FillAndExpand">
+
+				<Border.StrokeShape>
+					<RoundRectangle CornerRadius="10"/>
+				</Border.StrokeShape>
+
+
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<Button x:Name="RegionKrButton"
+							Grid.Column="0"
+							Margin="10"
+							Text="KR"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+					<Button x:Name="RegionUsButton"
+							Grid.Column="1"
+							Margin="10"
+							Text="US"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+					<Button x:Name="RegionCoinButton"
+							Grid.Column="2"
+							Margin="10"
+							Text="COIN"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+				</Grid>
+						
+			</Border>
+
+			<Border 
+				Grid.Row="0"
+				Grid.Column="1"
+				Margin="5, 0, 0, 0"
+				VerticalOptions="FillAndExpand"
+				HorizontalOptions="FillAndExpand">
+
+				<Border.StrokeShape>
+					<RoundRectangle CornerRadius="10"/>
+				</Border.StrokeShape>
+
+
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<Button x:Name="TypeStockButton"
+							Grid.Column="0"
+							Margin="10"
+							Text="Stock"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+					<Button x:Name="TypeEtfButton"
+							Grid.Column="1"
+							Margin="10"
+							Text="ETF"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+					<Button x:Name="TypeEtnButton"
+							Grid.Column="2"
+							Margin="10"
+							Text="ETN"
+							FontSize="12"
+							VerticalOptions="FillAndExpand"
+							HorizontalOptions="FillAndExpand"
+							Clicked="OnFilterClicked"/>
+
+				</Grid>
+
+			</Border>
+		</Grid>
+
+		<Border
+			Grid.Row="1"
+			Grid.Column="0"
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="FillAndExpand"
+			StrokeThickness="2"
+			Padding="10">
+
+			<Border.StrokeShape>
+				<RoundRectangle CornerRadius="5"/>
+			</Border.StrokeShape>
+
+			<Label
+				Text="Search"
+				HorizontalOptions="Center"
+				FontAttributes="Bold"
+				FontSize="18"
+				Padding="10"/>
+
+			<views:TextListView
+				x:Name="SearchList"
+				HorizontalOptions="Fill"
+				VerticalOptions="FillAndExpand"/>
+
+		</Border>
+
+		<Border
+            Grid.Row="1"
+            Grid.Column="2"
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="FillAndExpand"
+			StrokeThickness="2"
+			Padding="10">
+
+			<Border.StrokeShape>
+				<RoundRectangle CornerRadius="5"/>
+			</Border.StrokeShape>
+
+			<Label
+				Text="Added"
+				HorizontalOptions="Center"
+				FontAttributes="Bold"
+				FontSize="18"
+				Padding="10"/>
+
+			<views:TextListView
+				x:Name="AddedList"
+				HorizontalOptions="Fill"
+				VerticalOptions="FillAndExpand"/>
+
+		</Border>
+
+		<StackLayout
+			Grid.Row="1"
+			Grid.Column="1"
+			Margin="5"
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="Center">
+
+			<Button Text="▶" Clicked="OnAddClicked" />
+			<Button Text="◀" Clicked="OnDelClicked" Margin="0,10,0,0" />
+
+		</StackLayout>
+
+		<Button 
+			Grid.Row="2"
+			Grid.ColumnSpan="3"
+			VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+			FontSize="Small"
+			Padding="10"
+			Margin="5, 10, 5, 10"
+			Text="Execute"
+			Clicked="OnExecuteClicked" />
+
+	</Grid>
+
+</ContentPage>

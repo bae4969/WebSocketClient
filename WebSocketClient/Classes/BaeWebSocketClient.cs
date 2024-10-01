@@ -26,6 +26,7 @@ namespace WebSocketClient.Classes
 			try
 			{
 				await Disconnect();
+				_wait_service.Clear();
 				_ws = new();
 				_cancel_srouce = new();
 				await _ws.ConnectAsync(_server_uri, CancellationToken.None);
@@ -36,7 +37,8 @@ namespace WebSocketClient.Classes
 					{ "id", id },
 					{ "pw", BitConverter.ToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pw))).Replace("-", "").ToLower() }
 				};
-				RecvFuncType recvFunc = async (recv_msg) => {
+				RecvFuncType recvFunc = async (recv_msg) =>
+				{
 					var ret_code = recv_msg["result"].Value<int>();
 					var ret_msg = recv_msg["msg"].ToString();
 
@@ -142,7 +144,16 @@ namespace WebSocketClient.Classes
 
 					var recv_data = JObject.Parse(recv_msg);
 					if (_wait_service.TryRemove(recv_data["service"].ToString(), out var func))
-						func?.Invoke(recv_data);
+					{
+						try
+						{
+							func?.Invoke(recv_data);
+						}
+						catch
+						{
+							Console.WriteLine($"Fail to execute recv func {recv_data["service"].ToString()} ");
+						}
+					}
 				}
 				catch (Exception ex)
 				{

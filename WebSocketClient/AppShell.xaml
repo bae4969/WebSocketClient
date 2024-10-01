@@ -25,9 +25,17 @@
 	<TabBar>
         <Tab Title="Home" Icon="home_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
-        </Tab>
+		</Tab>
 
-        <Tab Title="Settings" Icon="settings_icon.png">
+		<Tab Title="Stock" Icon="stock_icon.png">
+			<ShellContent ContentTemplate="{DataTemplate local:StockPage}" />
+		</Tab>
+
+		<Tab Title="WOL" Icon="wol_icon.png">
+			<ShellContent ContentTemplate="{DataTemplate local:WolPage}" />
+		</Tab>
+
+		<Tab Title="Settings" Icon="settings_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:SettingPage}" />
         </Tab>
     </TabBar>
