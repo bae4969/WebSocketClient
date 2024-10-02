@@ -14,6 +14,7 @@ public class QueryInfoType
 {
 	public string stock_name { get; set; }
 	public string stock_code { get; set; }
+	public string stock_market { get; set; }
 	public string table_type { get; set; }
 	public string query_type { get; set; }
 }
@@ -60,6 +61,7 @@ public partial class StockPage : ContentPage
 							stock_code = x[1].ToString(),
 							query_type = x[2].ToString(),
 							stock_name = x[3].ToString(),
+							stock_market = x[4].ToString(),
 						};
 						AddedDatas.Add(t_info);
 					});
@@ -262,21 +264,33 @@ public partial class StockPage : ContentPage
 
 	private async void OnExecuteClicked(object sender, EventArgs e)
 	{
-		RecvFuncType recv_func = async (recv_msg) =>
-		{
+		List<List<string>> dd = new List<List<string>>();
 
-		};
+		JArray query_list = new();
+		foreach (var item in AddedDatas)
+			query_list.Add(new JArray { item.table_type, item.stock_code, item.query_type });
+
 		var ret = await BaeWebSocketClient.Send(
-			"",
-			"",
+			"stm",
+			"update_regi_list",
 			new JObject{
-				{ "device_name", "Bae-DeskTop"},
+				{ "list", query_list },
 			},
-			recv_func
+			async (recv_msg) =>
+			{
+				if (recv_msg["result"].Value<int>() != 200)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", $"Fail to recv {recv_msg["msg"].ToString()}", "OK");
+				}
+				else
+				{
+					await Application.Current.MainPage.DisplayAlert("Info", $"Success", "OK");
+				}
+			}
 			);
 		if (!ret)
 		{
-
+			await Application.Current.MainPage.DisplayAlert("Error", $"Fail to send msg", "OK");
 		}
 	}
 }
