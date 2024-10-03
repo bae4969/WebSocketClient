@@ -24,5 +24,25 @@ namespace WebSocketClient
 		{
 			await BaeWebSocketClient.Disconnect();
 		}
+
+		private async void OnSettingPageButtonClicked(object sender, EventArgs e)
+		{
+			await Navigation.PushAsync(new SettingPage());
+		}
+
+		private async void OnStockChartPageButtonClicked(object sender, EventArgs e)
+		{
+
+		}
+
+		private async void OnStockCollectionManagerPageButtonClicked(object sender, EventArgs e)
+		{
+			await Navigation.PushAsync(new StockCollectionManagerPage());
+		}
+
+		private async void OnWolPageButtonClicked(object sender, EventArgs e)
+		{
+			await Navigation.PushAsync(new WolPage());
+		}
 	}
 }

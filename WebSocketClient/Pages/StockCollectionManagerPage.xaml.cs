@@ -20,7 +20,7 @@ public class QueryInfoType
 }
 
 
-public partial class StockPage : ContentPage
+public partial class StockCollectionManagerPage : ContentPage
 {
 	private List<QueryInfoType> SearchDatas { get; set; } = [];
 	private List<QueryInfoType> AddedDatas { get; set; } = [];
@@ -30,7 +30,7 @@ public partial class StockPage : ContentPage
 
 
 
-	public StockPage()
+	public StockCollectionManagerPage()
 	{
 		InitializeComponent();
 	}
@@ -82,7 +82,12 @@ public partial class StockPage : ContentPage
 
 		SearchList.SetSearchFunc(async (obj, e) =>
 		{
-			if (e.NewTextValue.Length < 2) return;
+			if (e.NewTextValue == null || e.NewTextValue.Length < 2)
+			{
+				SearchDatas.Clear();
+				SearchList.ClearItems();
+				return;
+			}
 
 			var ret = await BaeWebSocketClient.Send(
 				"stm",
@@ -110,6 +115,7 @@ public partial class StockPage : ContentPage
 							stock_code = x[1].ToString(),
 							query_type = "EX",
 							stock_name = x[2].ToString(),
+							stock_market = x[3].ToString(),
 						};
 						SearchDatas.Add(t_info);
 					});
@@ -214,6 +220,9 @@ public partial class StockPage : ContentPage
 				}
 			}
 		}
+
+		SearchList.Reload();
+
 	}
 
 	private async void OnAddClicked(object sender, EventArgs e)

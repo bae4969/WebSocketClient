@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -47,6 +48,12 @@ public partial class TextListView : ContentView
 	public void ClearItems()
 	{
 		_items.Clear();
+	}
+	public void Reload()
+	{
+		var t_str = SearchBar.Text;
+		SearchBar.Text = "";
+		SearchBar.Text = t_str;
 	}
 	public bool AddItem(string str, int index = -1)
 	{

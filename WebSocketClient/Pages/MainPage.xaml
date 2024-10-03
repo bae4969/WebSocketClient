@@ -3,14 +3,5 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WebSocketClient.Pages.MainPage"
              Title="MainPage">
-    <VerticalStackLayout>
-        <Button
-            Text="Test"
-            Clicked="OnTestClicked"/>
-        <Label 
-            x:Name="TestStr"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+	
 </ContentPage>

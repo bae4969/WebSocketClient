@@ -8,36 +8,105 @@
     Title="WebSocketClient">
 
 	<Shell.FlyoutHeader>
-		<Grid Padding="10" BackgroundColor="#333333">
-			<!-- 왼쪽에 사용자 ID 표시 -->
-			<Label Text="{Binding UserId}" 
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center" />
+		<VerticalStackLayout Padding="10" BackgroundColor="#333333">
 
-			<!-- 오른쪽에 로그아웃 버튼 -->
-			<Button Text="Logout" 
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Clicked="OnLogoutButtonClicked" />
-		</Grid>
+			<Grid Margin="10" 
+					ColumnSpacing="5"
+					HeightRequest="50">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="50"/>
+					<ColumnDefinition Width="50"/>
+				</Grid.ColumnDefinitions>
+
+				<Label Text="{Binding UserId}"
+					   Grid.Column="0"
+					   Margin="10"
+					   FontSize="23"
+					   HorizontalOptions="Start"
+					   VerticalOptions="Center" />
+
+				<Button x:Name="SettingPageButton"
+						Grid.Column="1"
+						Padding="2" 
+						Margin="0"
+						HeightRequest="40"
+						HorizontalOptions="Center"
+						VerticalOptions="Center"
+						ImageSource="setting_icon.png"
+						Clicked="OnSettingPageButtonClicked" />
+
+				<Button x:Name="LogoutButton"
+						Grid.Column="2"
+						Padding="2" 
+						Margin="0"
+						HeightRequest="40"
+						HorizontalOptions="Center"
+						VerticalOptions="Center"
+						ImageSource="logout_icon.png"
+						Clicked="OnLogoutButtonClicked" />
+
+			</Grid>
+
+			<BoxView HeightRequest="1"
+					 Margin="0, 10, 0, 10"
+					 BackgroundColor="Gray"
+					 HorizontalOptions="FillAndExpand" />
+
+			<VerticalStackLayout Margin="10">
+
+				<Label Text="Stock Service"
+					   FontSize="20"
+					   Margin="5, 0, 0, 10"/>
+
+				<Button x:Name="StockChartPageButton"
+						Text="Stock Chart"
+						HorizontalOptions="Start"
+						TextColor="White"
+						BackgroundColor="Transparent"
+						Clicked="OnStockChartPageButtonClicked"/>
+
+				<Button x:Name="StockCollectionManagerPageButton"
+						Text="Stock Collection Manager"
+						HorizontalOptions="Start"
+						TextColor="White"
+						BackgroundColor="Transparent"
+						Clicked="OnStockCollectionManagerPageButtonClicked"/>
+
+			</VerticalStackLayout>
+
+			<BoxView HeightRequest="1"
+					 Margin="0, 10, 0, 10"
+					 BackgroundColor="Gray"
+					 HorizontalOptions="FillAndExpand"/>
+
+			<VerticalStackLayout Margin="10">
+
+				<Label Text="Private Service"
+					   FontSize="20"
+					   Margin="5, 0, 0, 10"/>
+
+				<Button x:Name="WolPageButton"
+						Text="Wake on Lan"
+						HorizontalOptions="Start"
+						TextColor="White"
+						BackgroundColor="Transparent"
+						Clicked="OnWolPageButtonClicked"/>
+
+			</VerticalStackLayout>
+
+		</VerticalStackLayout>
 	</Shell.FlyoutHeader>
-	
+
 	<TabBar>
-        <Tab Title="Home" Icon="home_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+		<Tab Title="Home" Icon="home_icon.png">
+			<ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
 		</Tab>
-
-		<Tab Title="Stock" Icon="stock_icon.png">
-			<ShellContent ContentTemplate="{DataTemplate local:StockPage}" />
-		</Tab>
-
-		<Tab Title="WOL" Icon="wol_icon.png">
-			<ShellContent ContentTemplate="{DataTemplate local:WolPage}" />
-		</Tab>
-
+		
 		<Tab Title="Settings" Icon="settings_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:SettingPage}" />
-        </Tab>
-    </TabBar>
+			<ShellContent ContentTemplate="{DataTemplate local:SettingPage}" />
+		</Tab>
+	</TabBar>
 
 </Shell>

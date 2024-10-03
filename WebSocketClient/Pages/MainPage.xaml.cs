@@ -21,23 +21,4 @@ public partial class MainPage : ContentPage
 		base.OnAppearing();
 	}
 
-	private async void OnTestClicked(object sender, EventArgs e)
-	{
-		RecvFuncType recv_func = async (recv_msg) =>
-		{
-			TestStr.Text = recv_msg.ToString();
-		};
-		var ret = await BaeWebSocketClient.Send(
-			"wol",
-			"execute",
-			new JObject{
-				{ "device_name", "Bae-DeskTop"},
-			},
-			recv_func
-			);
-		if (!ret)
-		{
-			TestStr.Text = "Fail to send";
-		}
-	}
 }
