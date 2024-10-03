@@ -32,7 +32,7 @@ namespace WebSocketClient
 
 		private async void OnStockChartPageButtonClicked(object sender, EventArgs e)
 		{
-
+			await Navigation.PushAsync(new StockChartPage());
 		}
 
 		private async void OnStockCollectionManagerPageButtonClicked(object sender, EventArgs e)
