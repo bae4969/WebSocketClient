@@ -59,7 +59,11 @@ public partial class StockCollectionManagerPage : ContentPage
 			else if (_typeFilter == "ETN" && item.Value.stock_type != "ETN")
 				continue;
 
-			ItemListView.AddItem(item.Value.stock_code, $"[{item.Value.stock_code}] {item.Value.stock_name}", true);
+			ItemListView.AddItem(
+				item.Key,
+				$"[{item.Value.stock_code}] {item.Value.stock_name}",
+				true
+				);
 		}
 	}
 	private void UpdateShowListWithSearchData()
@@ -91,7 +95,11 @@ public partial class StockCollectionManagerPage : ContentPage
 			else if (_typeFilter == "ETN" && item.Value.stock_type != "ETN")
 				continue;
 
-			ItemListView.AddItem(item.Value.stock_code, $"[{item.Value.stock_code}] {item.Value.stock_name}", _addedList.ContainsKey(item.Value.stock_code));
+			ItemListView.AddItem(
+				item.Key,
+				$"[{item.Value.stock_code}] {item.Value.stock_name}",
+				_addedList.ContainsKey(item.Value.stock_code)
+				);
 		}
 	}
 	private void UpdateAddedListFromSearchData()
@@ -150,7 +158,7 @@ public partial class StockCollectionManagerPage : ContentPage
 							stock_market = x[4].ToString(),
 							stock_type = x[5].ToString(),
 						};
-						_addedList.Add(t_info.stock_code, t_info);
+						_addedList.Add($"{t_info.stock_market}_{t_info.stock_code}", t_info);
 					});
 					UpdateShowListWithAddedData();
 				}
@@ -202,7 +210,7 @@ public partial class StockCollectionManagerPage : ContentPage
 								stock_market = x[3].ToString(),
 								stock_type = x[4].ToString(),
 							};
-							_searchList.Add(t_info.stock_code, t_info);
+							_searchList.Add($"{t_info.stock_market}_{t_info.stock_code}", t_info);
 						});
 						UpdateShowListWithSearchData();
 					}
