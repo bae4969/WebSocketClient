@@ -15,28 +15,26 @@ public partial class WolPage : ContentPage
 	{
 		base.OnAppearing();
 
-
-		RecvFuncType recv_func = async (recv_msg) =>
-		{
-			if (recv_msg["result"].Value<int>() != 200)
-			{
-				await Application.Current.MainPage.DisplayAlert("Error", $"Fail to load list {recv_msg["msg"].ToString()}", "OK");
-				return;
-			}
-
-			WolDeviceListPicker.Items.Clear();
-			recv_msg["data"]["list"].ToList().ForEach(x =>
-			{
-				WolDeviceListPicker.Items.Add(x.ToString());
-			});
-			if (WolDeviceListPicker.Items.Count > 0)
-				WolDeviceListPicker.SelectedIndex = 0;
-		};
 		var ret = await BaeWebSocketClient.Send(
 			"wol",
 			"list",
 			new JObject(),
-			recv_func
+			async (recv_msg) =>
+			{
+				if (recv_msg["result"].Value<int>() != 200)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", $"Fail to load list {recv_msg["msg"].ToString()}", "OK");
+					return;
+				}
+
+				WolDeviceListPicker.Items.Clear();
+				recv_msg["data"]["list"].ToList().ForEach(x =>
+				{
+					WolDeviceListPicker.Items.Add(x.ToString());
+				});
+				if (WolDeviceListPicker.Items.Count > 0)
+					WolDeviceListPicker.SelectedIndex = 0;
+			}
 			);
 		if (!ret)
 		{
@@ -48,24 +46,23 @@ public partial class WolPage : ContentPage
 	{
 		if (WolDeviceListPicker.SelectedIndex < 0) return;
 
-		RecvFuncType recv_func = async (recv_msg) =>
-		{
-			if (recv_msg["result"].Value<int>() == 200)
-			{
-				await Application.Current.MainPage.DisplayAlert("Info", $"success", "OK");
-			}
-			else
-			{
-				await Application.Current.MainPage.DisplayAlert("Error", $"Fail to execute wol {recv_msg["msg"].ToString()}", "OK");
-			}
-		};
 		var ret = await BaeWebSocketClient.Send(
 			"wol",
 			"execute",
 			new JObject{
 				{ "device_name", WolDeviceListPicker.SelectedItem.ToString()},
 			},
-			recv_func
+			async (recv_msg) =>
+			{
+				if (recv_msg["result"].Value<int>() == 200)
+				{
+					await Application.Current.MainPage.DisplayAlert("Info", $"success", "OK");
+				}
+				else
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", $"Fail to execute wol {recv_msg["msg"].ToString()}", "OK");
+				}
+			}
 			);
 		if (!ret)
 		{

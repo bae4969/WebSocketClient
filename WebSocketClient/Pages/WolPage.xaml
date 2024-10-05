@@ -10,7 +10,6 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
-		<!-- Picker (리스트 박스) -->
 		<Picker x:Name="WolDeviceListPicker"
                 Title="Device List"
 				Grid.Row="0"
@@ -22,7 +21,6 @@
 			</Picker.Items>
 		</Picker>
 
-		<!-- Button -->
 		<Button Text="Execute"
 				Grid.Row="1"
 				HorizontalOptions="FillAndExpand"

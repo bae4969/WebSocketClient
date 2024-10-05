@@ -21,10 +21,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>WebSocketClient</ApplicationTitle>
+		<ApplicationTitle>BaeClient</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.websocketclient</ApplicationId>
+		<ApplicationId>com.bae.websocketclient</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -61,6 +61,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\app_icon.ico" />
+	  <None Remove="Resources\AppIcon\app_icon.png" />
 	  <None Remove="Resources\Images\setting_icon.webp" />
 	</ItemGroup>
 
@@ -77,6 +79,9 @@
 	  </Compile>
 	  <Compile Update="Pages\StockCollectionManagerPage.xaml.cs">
 	    <DependentUpon>StockCollectionManagerPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SearchCheckListView.xaml.cs">
+	    <DependentUpon>SearchCheckListView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -97,6 +102,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CheckBoxListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SearchCheckListView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TextListView.xaml">

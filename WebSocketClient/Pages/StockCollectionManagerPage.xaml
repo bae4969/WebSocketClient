@@ -5,23 +5,18 @@
              xmlns:views="clr-namespace:WebSocketClient.Views"
              Title="StockPage">
 
-	<Grid Padding="10">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="60"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-
+	<Grid Padding="10"
+		  RowSpacing="5">
+		
 		<Grid.RowDefinitions>
-			<RowDefinition Height="70"/>
+			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="80"/>
 		</Grid.RowDefinitions>
 
 		<Grid 
 			Grid.Row="0"
-			Grid.ColumnSpan="3"
-			Padding="0, 0, 0, 10">
+			ColumnSpacing="5">
 				
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -32,111 +27,42 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-
-			<Border 
+			<Picker
+				x:Name="RegionFilter"
 				Grid.Row="0"
 				Grid.Column="0"
-				Margin="0, 0, 5, 0"
+				HorizontalOptions="FillAndExpand"
 				VerticalOptions="FillAndExpand"
-				HorizontalOptions="FillAndExpand">
+				SelectedIndexChanged="OnRegionFilterSelectedIndexChanged">
 
-				<Border.StrokeShape>
-					<RoundRectangle CornerRadius="10"/>
-				</Border.StrokeShape>
-
-
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<Button x:Name="RegionKrButton"
-							Grid.Column="0"
-							Margin="10"
-							Text="KR"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-					<Button x:Name="RegionUsButton"
-							Grid.Column="1"
-							Margin="10"
-							Text="US"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-					<Button x:Name="RegionCoinButton"
-							Grid.Column="2"
-							Margin="10"
-							Text="COIN"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-				</Grid>
-						
-			</Border>
-
-			<Border 
+				<Picker.Items>
+					<x:String>Region</x:String>
+					<x:String>Korea</x:String>
+					<x:String>Us</x:String>
+					<x:String>Coin</x:String>
+				</Picker.Items>
+			</Picker>
+			
+			<Picker
+				x:Name="TypeFilter"
 				Grid.Row="0"
 				Grid.Column="1"
-				Margin="5, 0, 0, 0"
+				HorizontalOptions="FillAndExpand"
 				VerticalOptions="FillAndExpand"
-				HorizontalOptions="FillAndExpand">
-
-				<Border.StrokeShape>
-					<RoundRectangle CornerRadius="10"/>
-				</Border.StrokeShape>
-
-
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<Button x:Name="TypeStockButton"
-							Grid.Column="0"
-							Margin="10"
-							Text="Stock"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-					<Button x:Name="TypeEtfButton"
-							Grid.Column="1"
-							Margin="10"
-							Text="ETF"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-					<Button x:Name="TypeEtnButton"
-							Grid.Column="2"
-							Margin="10"
-							Text="ETN"
-							FontSize="12"
-							VerticalOptions="FillAndExpand"
-							HorizontalOptions="FillAndExpand"
-							Clicked="OnFilterClicked"/>
-
-				</Grid>
-
-			</Border>
+				SelectedIndexChanged="OnTypeFilterSelectedIndexChanged">
+				
+				<Picker.Items>
+					<x:String>Type</x:String>
+					<x:String>Stock</x:String>
+					<x:String>ETF</x:String>
+					<x:String>ETN</x:String>
+				</Picker.Items>
+			</Picker>
+			
 		</Grid>
 
 		<Border
 			Grid.Row="1"
-			Grid.Column="0"
 			HorizontalOptions="FillAndExpand"
 			VerticalOptions="FillAndExpand"
 			StrokeThickness="2"
@@ -153,54 +79,15 @@
 				FontSize="18"
 				Padding="10"/>
 
-			<views:TextListView
-				x:Name="SearchList"
+			<views:SearchCheckListView
+				x:Name="ItemListView"
 				HorizontalOptions="Fill"
 				VerticalOptions="FillAndExpand"/>
 
 		</Border>
-
-		<Border
-            Grid.Row="1"
-            Grid.Column="2"
-			HorizontalOptions="FillAndExpand"
-			VerticalOptions="FillAndExpand"
-			StrokeThickness="2"
-			Padding="10">
-
-			<Border.StrokeShape>
-				<RoundRectangle CornerRadius="5"/>
-			</Border.StrokeShape>
-
-			<Label
-				Text="Added"
-				HorizontalOptions="Center"
-				FontAttributes="Bold"
-				FontSize="18"
-				Padding="10"/>
-
-			<views:TextListView
-				x:Name="AddedList"
-				HorizontalOptions="Fill"
-				VerticalOptions="FillAndExpand"/>
-
-		</Border>
-
-		<StackLayout
-			Grid.Row="1"
-			Grid.Column="1"
-			Margin="5"
-			HorizontalOptions="FillAndExpand"
-			VerticalOptions="Center">
-
-			<Button Text="▶" Clicked="OnAddClicked" />
-			<Button Text="◀" Clicked="OnDelClicked" Margin="0,10,0,0" />
-
-		</StackLayout>
 
 		<Button 
 			Grid.Row="2"
-			Grid.ColumnSpan="3"
 			VerticalOptions="FillAndExpand"
             HorizontalOptions="FillAndExpand"
 			FontSize="Small"

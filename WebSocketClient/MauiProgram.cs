@@ -35,7 +35,7 @@ namespace WebSocketClient
                     if (appWindow != null)
                     {
                         // 원하는 초기 크기를 설정 (폭, 높이)
-                        appWindow.Resize(new SizeInt32(600, 800));
+                        appWindow.Resize(new SizeInt32(440, 850));
                     }
                 });
             });
