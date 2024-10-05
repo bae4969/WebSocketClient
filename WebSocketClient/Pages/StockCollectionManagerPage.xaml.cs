@@ -98,7 +98,7 @@ public partial class StockCollectionManagerPage : ContentPage
 			ItemListView.AddItem(
 				item.Key,
 				$"[{item.Value.stock_code}] {item.Value.stock_name}",
-				_addedList.ContainsKey(item.Value.stock_code)
+				_addedList.ContainsKey(item.Key)
 				);
 		}
 	}
