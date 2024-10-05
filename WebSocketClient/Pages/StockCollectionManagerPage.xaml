@@ -11,7 +11,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="80"/>
+			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 
 		<Grid 
@@ -90,10 +90,8 @@
 			Grid.Row="2"
 			VerticalOptions="FillAndExpand"
             HorizontalOptions="FillAndExpand"
-			FontSize="Small"
-			Padding="10"
-			Margin="5, 10, 5, 10"
-			Text="Execute"
+			FontSize="14"
+			Text="Update Collection List"
 			Clicked="OnExecuteClicked" />
 
 	</Grid>

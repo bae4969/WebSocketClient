@@ -37,7 +37,7 @@ namespace WebSocketClient
 			else
 				await Navigation.PushAsync(new SettingPage());
 
-			// 스택이 maxStackDepth를 넘는 경우 앞의 페이지들을 제거
+			Shell.Current.FlyoutIsPresented = false;
 			while (Navigation.NavigationStack.Count > _maxStackDepth)
 				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
@@ -53,7 +53,7 @@ namespace WebSocketClient
 			else
 				await Navigation.PushAsync(new StockChartPage());
 
-			// 스택이 maxStackDepth를 넘는 경우 앞의 페이지들을 제거
+			Shell.Current.FlyoutIsPresented = false;
 			while (Navigation.NavigationStack.Count > _maxStackDepth)
 				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
@@ -69,9 +69,9 @@ namespace WebSocketClient
 			else
 				await Navigation.PushAsync(new StockCollectionManagerPage());
 
-			// 스택이 maxStackDepth를 넘는 경우 앞의 페이지들을 제거
+			Shell.Current.FlyoutIsPresented = false;
 			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
+				Navigation.RemovePage(Navigation.NavigationStack.First()); 
 		}
 
 		private async void OnWolPageButtonClicked(object sender, EventArgs e)
@@ -85,7 +85,7 @@ namespace WebSocketClient
 			else
 				await Navigation.PushAsync(new WolPage());
 
-			// 스택이 maxStackDepth를 넘는 경우 앞의 페이지들을 제거
+			Shell.Current.FlyoutIsPresented = false;
 			while (Navigation.NavigationStack.Count > _maxStackDepth)
 				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
