@@ -88,11 +88,6 @@ public partial class SearchCheckListView : ContentView
 			}
 			catch { }
 		};
-		ListViewItems.ItemTapped+= (sender, e) =>
-		{
-			var item = (StringCheckType)e.Item;
-			item.IsChecked = !item.IsChecked;
-		};
 	}
 
 	public void SetSearchFunc(EventHandler<TextChangedEventArgs> textChangeFunc = null)

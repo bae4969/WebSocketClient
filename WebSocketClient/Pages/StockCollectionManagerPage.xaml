@@ -72,13 +72,6 @@
 				<RoundRectangle CornerRadius="5"/>
 			</Border.StrokeShape>
 
-			<Label
-				Text="Search"
-				HorizontalOptions="Center"
-				FontAttributes="Bold"
-				FontSize="18"
-				Padding="10"/>
-
 			<views:SearchCheckListView
 				x:Name="ItemListView"
 				HorizontalOptions="Fill"

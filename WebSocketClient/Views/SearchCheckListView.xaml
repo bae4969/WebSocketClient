@@ -14,7 +14,7 @@
 				x:Name="NumOfItmes"
 				Text="0"
 				TextColor="#40FFFFFF"
-				Margin="0,0,40,0"
+				Margin="0,0,50,0"
 				VerticalOptions="Center"
 				HorizontalOptions="End"/>
 

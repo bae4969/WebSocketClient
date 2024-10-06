@@ -2,6 +2,41 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WebSocketClient.Pages.StockChartPage"
+             xmlns:oxy="clr-namespace:OxyPlot.Maui.Skia;assembly=OxyPlot.Maui.Skia"
              Title="StockChartPage">
-	
+
+	<Grid
+		Margin="10"
+		RowSpacing="10">
+		
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
+		</Grid.RowDefinitions>
+
+		<Picker
+			x:Name="ItemList"
+			Grid.Row="0"
+			Margin="5"
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="CenterAndExpand"
+			SelectedIndexChanged="OnItemListSelectedIndexChanged">
+			<Picker.Items>
+
+			</Picker.Items>
+		</Picker>
+
+		<oxy:PlotView
+			x:Name="ChartPlot"
+			Grid.Row="1"
+			BackgroundColor="WhiteSmoke"
+			VerticalOptions="FillAndExpand"
+			HorizontalOptions="FillAndExpand" />
+
+		<Label
+			Grid.Row="2"
+			Text="TEST"
+			/>
+	</Grid>
 </ContentPage>

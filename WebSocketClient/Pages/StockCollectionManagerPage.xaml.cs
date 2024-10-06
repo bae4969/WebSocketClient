@@ -8,16 +8,6 @@ using WebSocketClient.Views;
 
 namespace WebSocketClient.Pages;
 
-// 데이터 모델
-public class QueryInfoType
-{
-	public string table_type { get; set; }
-	public string stock_code { get; set; }
-	public string query_type { get; set; }
-	public string stock_name { get; set; }
-	public string stock_market { get; set; }
-	public string stock_type { get; set; }
-}
 
 
 public partial class StockCollectionManagerPage : ContentPage

@@ -122,7 +122,7 @@ namespace WebSocketClient.Classes
 		private static async Task FuncRecvLoop()
 		{
 			var cancel_token = _cancel_srouce.Token;
-			var buffer = new ArraySegment<byte>(new byte[1024]);
+			var buffer = new ArraySegment<byte>(new byte[1024 * 1024]);
 
 			while (_ws.State == WebSocketState.Open && !cancel_token.IsCancellationRequested)
 			{
@@ -192,5 +192,16 @@ namespace WebSocketClient.Classes
 				return false;
 			}
 		}
+	}
+
+
+	public class QueryInfoType
+	{
+		public string table_type { get; set; }
+		public string stock_code { get; set; }
+		public string query_type { get; set; }
+		public string stock_name { get; set; }
+		public string stock_market { get; set; }
+		public string stock_type { get; set; }
 	}
 }
