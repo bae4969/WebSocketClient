@@ -15,17 +15,11 @@
 			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 
-		<Picker
-			x:Name="ItemList"
+		<SearchBar
+			x:Name="SearchBarObj"
 			Grid.Row="0"
-			Margin="5"
-			HorizontalOptions="FillAndExpand"
-			VerticalOptions="CenterAndExpand"
-			SelectedIndexChanged="OnItemListSelectedIndexChanged">
-			<Picker.Items>
-
-			</Picker.Items>
-		</Picker>
+			Focused="SearchBar_Focused"
+			/>
 
 		<oxy:PlotView
 			x:Name="ChartPlot"

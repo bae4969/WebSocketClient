@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 x:Class="WebSocketClient.Pages.LevelerPage"
+			 Title="Leveler">
+
+	<Grid
+		RowSpacing="10"
+		ColumnSpacing="10">
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="30"/>
+			<ColumnDefinition Width="240"/>
+			<ColumnDefinition Width="30"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="240"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+
+		<Frame
+			BackgroundColor="#2C3E50"
+			BorderColor="#FFD700"
+			CornerRadius="100000"
+			Grid.Row="2"
+			Grid.Column="2"/>
+		
+		<Frame
+			BackgroundColor="Transparent"
+			BorderColor="#FFD700"
+			CornerRadius="100000"
+			Grid.Row="2"
+			Grid.Column="2"
+			MaximumWidthRequest="30"
+			MaximumHeightRequest="30"/>
+
+		<Frame
+			BackgroundColor="#2C3E50"
+			BorderColor="#FFD700"
+			Grid.Row="1"
+			Grid.Column="2"/>
+
+		<Frame
+			BackgroundColor="Transparent"
+			BorderColor="#FFD700"
+			CornerRadius="0"
+			Grid.Row="1"
+			Grid.Column="2"
+			MaximumWidthRequest="30"/>
+
+		<Frame
+			BackgroundColor="#2C3E50"
+			BorderColor="#FFD700"
+			Grid.Row="2"
+			Grid.Column="3"/>
+
+		<Frame
+			BackgroundColor="Transparent"
+			BorderColor="#FFD700"
+			CornerRadius="0"
+			Grid.Row="2"
+			Grid.Column="3"
+			MaximumHeightRequest="30"/>
+
+
+		<Frame
+			x:Name="TotDot"
+			Grid.Row="2"
+			Grid.Column="2"
+			BackgroundColor="#FF0000"
+			CornerRadius="50"
+			HeightRequest="20"
+			WidthRequest="20"
+			HorizontalOptions="Start"
+			VerticalOptions="Start" />
+
+		<Frame
+			x:Name="RollDot"
+			Grid.Row="1"
+			Grid.Column="2"
+			BackgroundColor="#FF0000"
+			CornerRadius="50"
+			HeightRequest="20"
+			WidthRequest="20"
+			HorizontalOptions="Start"/>
+
+		<Frame
+			x:Name="TiltDot"
+			Grid.Row="2"
+			Grid.Column="3"
+			BackgroundColor="#FF0000"
+			CornerRadius="50"
+			HeightRequest="20"
+			WidthRequest="20"
+			VerticalOptions="Start"/>
+
+		<Label
+			x:Name="DegreeTextObj"
+			Grid.Row="3"
+			Grid.Column="2"
+			VerticalOptions="CenterAndExpand"
+			HorizontalOptions="CenterAndExpand"
+			/>
+
+	</Grid>
+
+</ContentPage>

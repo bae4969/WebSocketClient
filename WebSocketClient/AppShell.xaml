@@ -56,6 +56,37 @@
 				HeightRequest="1"
 				Margin="0, 10, 0, 10"
 				BackgroundColor="Gray"
+				HorizontalOptions="FillAndExpand"/>
+
+			<VerticalStackLayout Margin="10">
+
+				<Label
+					Text="On Device Service"
+					FontSize="20"
+					Margin="5, 0, 0, 10"/>
+
+				<Button
+					x:Name="LevelerPageButton"
+					Text="Leveler"
+					HorizontalOptions="Start"
+					TextColor="White"
+					BackgroundColor="Transparent"
+					Clicked="OnLevelerPageButtonClicked"/>
+
+				<Button
+					x:Name="LocationAlertPageButton"
+					Text="Location Alert"
+					HorizontalOptions="Start"
+					TextColor="White"
+					BackgroundColor="Transparent"
+					Clicked="OnLocationAlertPageButtonClicked"/>
+
+			</VerticalStackLayout>
+
+			<BoxView
+				HeightRequest="1"
+				Margin="0, 10, 0, 10"
+				BackgroundColor="Gray"
 				HorizontalOptions="FillAndExpand" />
 
 			<VerticalStackLayout Margin="10">

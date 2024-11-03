@@ -57,7 +57,7 @@ public partial class SearchCheckListView : ContentView
 		InitializeComponent();
 		ListViewItems.ItemsSource = _items;
 		this.BindingContext = this;
-		SearchBar.TextChanged += async (sender, e) =>
+		StockSearchBar.TextChanged += async (sender, e) =>
 		{
 			if (_cancellationTokenSource != null)
 				_cancellationTokenSource.Cancel();
@@ -97,9 +97,9 @@ public partial class SearchCheckListView : ContentView
 
 	public void Reload()
 	{
-		var t_str = SearchBar.Text;
-		SearchBar.Text = "";
-		SearchBar.Text = t_str;
+		var t_str = StockSearchBar.Text;
+		StockSearchBar.Text = "";
+		StockSearchBar.Text = t_str;
 	}
 	public bool IsDuplicate(string str)
 	{

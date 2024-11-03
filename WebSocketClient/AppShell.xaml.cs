@@ -42,6 +42,42 @@ namespace WebSocketClient
 				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
 
+		/************************************************************************************************************/
+
+		private async void OnLevelerPageButtonClicked(object sender, EventArgs e)
+		{
+			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is LevelerPage);
+			if (existingPage != null)
+			{
+				Navigation.RemovePage(existingPage);
+				await Navigation.PushAsync(existingPage);
+			}
+			else
+				await Navigation.PushAsync(new LevelerPage());
+
+			Shell.Current.FlyoutIsPresented = false;
+			while (Navigation.NavigationStack.Count > _maxStackDepth)
+				Navigation.RemovePage(Navigation.NavigationStack.First());
+		}
+
+		private async void OnLocationAlertPageButtonClicked(object sender, EventArgs e)
+		{
+			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is LocationAlertPage);
+			if (existingPage != null)
+			{
+				Navigation.RemovePage(existingPage);
+				await Navigation.PushAsync(existingPage);
+			}
+			else
+				await Navigation.PushAsync(new LocationAlertPage());
+
+			Shell.Current.FlyoutIsPresented = false;
+			while (Navigation.NavigationStack.Count > _maxStackDepth)
+				Navigation.RemovePage(Navigation.NavigationStack.First());
+		}
+
+		/************************************************************************************************************/
+
 		private async void OnStockChartPageButtonClicked(object sender, EventArgs e)
 		{
 			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is StockChartPage);
@@ -71,8 +107,10 @@ namespace WebSocketClient
 
 			Shell.Current.FlyoutIsPresented = false;
 			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First()); 
+				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
+
+		/************************************************************************************************************/
 
 		private async void OnWolPageButtonClicked(object sender, EventArgs e)
 		{

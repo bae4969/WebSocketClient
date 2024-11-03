@@ -2,3 +2,6 @@
 
 # IDE0058: 식 값은 절대 사용되지 않습니다.
 dotnet_diagnostic.IDE0058.severity = silent
+
+# CS8602: null 가능 참조에 대한 역참조입니다.
+dotnet_diagnostic.CS8602.severity = silent

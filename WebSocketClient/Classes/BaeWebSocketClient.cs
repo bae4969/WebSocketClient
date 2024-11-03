@@ -203,5 +203,10 @@ namespace WebSocketClient.Classes
 		public string stock_name { get; set; }
 		public string stock_market { get; set; }
 		public string stock_type { get; set; }
+
+		public string ToKeyString()
+		{
+			return $"[{stock_code}] {stock_name}";
+		}
 	}
 }

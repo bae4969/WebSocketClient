@@ -5,13 +5,15 @@ using OxyPlot.Series;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using WebSocketClient.Classes;
+using WebSocketClient.Views;
 
 namespace WebSocketClient.Pages;
 
 
 public partial class StockChartPage : ContentPage
 {
-	public Dictionary<string, QueryInfoType> _queryItems { get; set; } = [];
+	private Dictionary<string, QueryInfoType> _queryItems { get; set; } = [];
+	private QueryInfoType _lastSelected = null;
 
 
 	public StockChartPage()
@@ -23,7 +25,7 @@ public partial class StockChartPage : ContentPage
 	{
 		base.OnAppearing();
 
-
+		if (_queryItems.Count > 0) return;
 		var ret = await BaeWebSocketClient.Send(
 			"stm",
 			"get_regi_list",
@@ -48,10 +50,8 @@ public partial class StockChartPage : ContentPage
 						stock_market = x[4].ToString(),
 						stock_type = x[5].ToString(),
 					};
-					_queryItems.Add($"[{t_info.stock_code}] {t_info.stock_name}", t_info);
+					_queryItems.Add(t_info.ToKeyString(), t_info);
 				});
-				ItemList.Items.Clear();
-				_queryItems.ToList().ForEach(x => ItemList.Items.Add(x.Key));
 			}
 			);
 		if (!ret)
@@ -60,19 +60,32 @@ public partial class StockChartPage : ContentPage
 		}
 	}
 
-
-	private async void OnItemListSelectedIndexChanged(object sender, EventArgs e)
+	private async void SearchBar_Focused(object sender, FocusEventArgs e)
 	{
-		if (!_queryItems.TryGetValue(ItemList.SelectedItem.ToString(), out QueryInfoType queryInfo))
+		SearchItemPage searchItemPage = new SearchItemPage();
+		searchItemPage.SetItems(_queryItems.Keys.ToList());
+		await Navigation.PushAsync(searchItemPage);
+		string selected_str = await searchItemPage.GetSelectionResult();
+
+		QueryInfoType queryInfo = _lastSelected;
+		if (selected_str == null ||
+			selected_str == _lastSelected?.ToKeyString() ||
+			!_queryItems.TryGetValue(selected_str, out queryInfo))
+		{
+			SearchBarObj.Text = _lastSelected?.ToKeyString();
 			return;
+		}
+
+		_lastSelected = queryInfo;
+		SearchBarObj.Text = queryInfo?.ToKeyString();
 
 		var ret = await BaeWebSocketClient.Send(
 			"stm",
 			"get_candle_data",
 			new JObject()
 			{
-				{ "table_type", queryInfo.table_type },
-				{ "target_code", queryInfo.stock_code },
+				{ "table_type", _lastSelected.table_type },
+				{ "target_code", _lastSelected.stock_code },
 				{ "year", 2024 },
 				{ "week_from", 1 },
 				{ "week_to", 53 },

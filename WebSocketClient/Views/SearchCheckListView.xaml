@@ -7,7 +7,7 @@
 
 		<Grid>
 			<SearchBar
-				x:Name="SearchBar"
+				x:Name="StockSearchBar"
 				Placeholder="Search" />
 
 			<Label

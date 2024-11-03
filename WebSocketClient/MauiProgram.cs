@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using OxyPlot.Maui.Skia;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 #if WINDOWS
 using Microsoft.UI; // WinUI 네임스페이스
 using Microsoft.UI.Windowing; // 창 크기 설정을 위한 네임스페이스
-using SkiaSharp.Views.Maui.Controls.Hosting;
 using Windows.Graphics; // 창 크기 조정에 필요한 네임스페이스
 #endif
 
@@ -18,7 +18,7 @@ namespace WebSocketClient
 			var builder = MauiApp.CreateBuilder();
 			builder
 				.UseMauiApp<App>()
-				.UseSkiaSharp()
+				.UseSkiaSharp(true)
 				.UseOxyPlotSkia()
 				.ConfigureFonts(fonts =>
 				{

@@ -3,6 +3,10 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 x:Class="WebSocketClient.Pages.SettingPage"
 			 Title="SettingPage">
+
+	<StackLayout Padding="20">
+		
+	</StackLayout>
 	
 </ContentPage>
    
