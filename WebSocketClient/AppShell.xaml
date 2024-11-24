@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="WebSocketClient.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:WebSocketClient.Pages"
-    Shell.FlyoutBehavior="Flyout"
-    Title="WebSocketClient">
+	x:Class="WebSocketClient.AppShell"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:WebSocketClient.Pages"
+	Shell.FlyoutBehavior="Flyout"
+	Title="WebSocketClient">
 
 	<Shell.FlyoutHeader>
 		<VerticalStackLayout Padding="10" BackgroundColor="#333333">
@@ -16,6 +16,7 @@
 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="50"/>
 					<ColumnDefinition Width="50"/>
 					<ColumnDefinition Width="50"/>
 				</Grid.ColumnDefinitions>
@@ -37,7 +38,7 @@
 					HorizontalOptions="Center"
 					VerticalOptions="Center"
 					ImageSource="setting_icon.png"
-					Clicked="OnSettingPageButtonClicked" />
+					Clicked="OnNavigateButtonClicked" />
 
 				<Button
 					x:Name="LogoutButton"
@@ -49,6 +50,17 @@
 					VerticalOptions="Center"
 					ImageSource="logout_icon.png"
 					Clicked="OnLogoutButtonClicked" />
+
+				<Button
+					x:Name="ExitButton"
+					Grid.Column="3"
+					Padding="2" 
+					Margin="0"
+					HeightRequest="40"
+					HorizontalOptions="Center"
+					VerticalOptions="Center"
+					ImageSource="exit_icon.png"
+					Clicked="OnExitButtonClicked" />
 
 			</Grid>
 
@@ -71,7 +83,7 @@
 					HorizontalOptions="Start"
 					TextColor="White"
 					BackgroundColor="Transparent"
-					Clicked="OnLevelerPageButtonClicked"/>
+					Clicked="OnNavigateButtonClicked"/>
 
 				<Button
 					x:Name="LocationAlertPageButton"
@@ -79,7 +91,7 @@
 					HorizontalOptions="Start"
 					TextColor="White"
 					BackgroundColor="Transparent"
-					Clicked="OnLocationAlertPageButtonClicked"/>
+					Clicked="OnNavigateButtonClicked"/>
 
 			</VerticalStackLayout>
 
@@ -102,7 +114,7 @@
 					HorizontalOptions="Start"
 					TextColor="White"
 					BackgroundColor="Transparent"
-					Clicked="OnStockChartPageButtonClicked"/>
+					Clicked="OnNavigateButtonClicked"/>
 
 				<Button
 					x:Name="StockCollectionManagerPageButton"
@@ -110,7 +122,7 @@
 					HorizontalOptions="Start"
 					TextColor="White"
 					BackgroundColor="Transparent"
-					Clicked="OnStockCollectionManagerPageButtonClicked"/>
+					Clicked="OnNavigateButtonClicked"/>
 
 			</VerticalStackLayout>
 
@@ -133,7 +145,7 @@
 					HorizontalOptions="Start"
 					TextColor="White"
 					BackgroundColor="Transparent"
-					Clicked="OnWolPageButtonClicked"/>
+					Clicked="OnNavigateButtonClicked"/>
 
 			</VerticalStackLayout>
 

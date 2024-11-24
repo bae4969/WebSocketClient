@@ -16,11 +16,12 @@ namespace WebSocketClient.Classes
 	{
 		private static Uri _server_uri = new("ws://BaeIptimeDDNSAddress.iptime.org:49693/bae");
 		private static ClientWebSocket _ws = new();
-		private static CancellationTokenSource _cancel_srouce = new();
+		private static CancellationTokenSource _cancel_source = new();
 		private static ConcurrentDictionary<string, RecvFuncType?> _wait_service = new();
 		private static bool _is_logined = false;
 
 		// WebSocket 연결 함수
+		[Obsolete]
 		public static async Task<bool> Connect(string id, string pw, bool isAutoLogin)
 		{
 			try
@@ -28,14 +29,14 @@ namespace WebSocketClient.Classes
 				await Disconnect();
 				_wait_service.Clear();
 				_ws = new();
-				_cancel_srouce = new();
-				await _ws.ConnectAsync(_server_uri, CancellationToken.None);
+				_cancel_source = new();
+				await _ws.ConnectAsync(_server_uri, _cancel_source.Token);
 				_ = FuncRecvLoop();
 
 				var req_dict = new JObject()
 				{
 					{ "id", id },
-					{ "pw", BitConverter.ToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pw))).Replace("-", "").ToLower() }
+					{ "pw", BitConverter.ToString(SHA256.HashData(Encoding.UTF8.GetBytes(pw))).Replace("-", "").ToLower() }
 				};
 				RecvFuncType recvFunc = async (recv_msg) =>
 				{
@@ -48,7 +49,10 @@ namespace WebSocketClient.Classes
 						Preferences.Set("user_id", id);
 						Preferences.Set("user_pw", pw);
 						Preferences.Set("is_auto_login", isAutoLogin);
-						Application.Current.MainPage = new AppShell();
+						Device.BeginInvokeOnMainThread(() =>
+						{
+							Application.Current.MainPage = new AppShell();
+						});
 						_is_logined = true;
 					}
 					else
@@ -61,6 +65,7 @@ namespace WebSocketClient.Classes
 			}
 			catch (Exception ex)
 			{
+				Console.WriteLine($"Connection failed: {ex.Message}");
 				return false;
 			}
 		}
@@ -68,16 +73,20 @@ namespace WebSocketClient.Classes
 		// WebSocket 닫기
 		public static async Task Disconnect()
 		{
-			_cancel_srouce.Cancel();
-			if (_ws.State == WebSocketState.Open)
+			_cancel_source.Cancel();
+			if (_ws != null)
 			{
 				try
 				{
-					await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Reconnecting", CancellationToken.None);
+					if (_ws.State == WebSocketState.Open)
+					{
+						await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Reconnecting", CancellationToken.None);
+					}
 				}
 				finally
 				{
 					_ws.Dispose();
+					_ws = null;
 				}
 			}
 
@@ -93,7 +102,7 @@ namespace WebSocketClient.Classes
 		// 주기적으로 Ping을 보내는 함수
 		private static async Task FuncPingLoop()
 		{
-			var cancel_token = _cancel_srouce.Token;
+			var cancel_token = _cancel_source.Token;
 			var ping_interval = TimeSpan.FromSeconds(3); // Ping을 보낼 주기
 			var ping_dict = new JObject
 			{
@@ -116,12 +125,12 @@ namespace WebSocketClient.Classes
 				}
 			}
 
-			Disconnect();
+			await Disconnect();
 		}
 
 		private static async Task FuncRecvLoop()
 		{
-			var cancel_token = _cancel_srouce.Token;
+			var cancel_token = _cancel_source.Token;
 			var buffer = new ArraySegment<byte>(new byte[1024 * 1024]);
 
 			while (_ws.State == WebSocketState.Open && !cancel_token.IsCancellationRequested)
@@ -151,7 +160,7 @@ namespace WebSocketClient.Classes
 						}
 						catch
 						{
-							Console.WriteLine($"Fail to execute recv func {recv_data["service"].ToString()} ");
+							Console.WriteLine($"Fail to execute recv func {recv_data["service"]} ");
 						}
 					}
 				}
@@ -166,7 +175,7 @@ namespace WebSocketClient.Classes
 		// 서비스 요청 및 응답 처리
 		public static async Task<bool> Send(string service_name, string work_name, JObject req_dict, RecvFuncType? recv_func)
 		{
-			var cancel_token = _cancel_srouce.Token;
+			var cancel_token = _cancel_source.Token;
 			bool is_added = false;
 			try
 			{

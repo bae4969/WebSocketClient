@@ -1,4 +1,7 @@
-﻿using WebSocketClient.Classes;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using System.ComponentModel;
+using WebSocketClient.Classes;
 using WebSocketClient.Pages;
 
 namespace WebSocketClient
@@ -9,9 +12,44 @@ namespace WebSocketClient
 		private string _userId { get; set; }
 		private const int _maxStackDepth = 3;
 
+		protected static void CloseApp()
+		{
+			MainThread.BeginInvokeOnMainThread(async () =>
+			{
+				var isClose = await Application.Current.MainPage.DisplayAlert("Alert", "Close App?", "Yes", "No");
+				if (!isClose) return;
+#if ANDROID
+			Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+#elif WINDOWS
+				Environment.Exit(0);
+#endif
+			});
+		}
+		protected async void NavigateToPage<TPage>() where TPage : Page, new()
+		{
+			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is TPage);
+
+			if (existingPage != null)
+			{
+				Navigation.RemovePage(existingPage);
+				await Navigation.PushAsync(existingPage);
+			}
+			else
+			{
+				await Navigation.PushAsync(new TPage());
+			}
+
+			Shell.Current.FlyoutIsPresented = false;
+
+			while (Navigation.NavigationStack.Count > _maxStackDepth)
+				Navigation.RemovePage(Navigation.NavigationStack.First());
+		}
+
+		/************************************************************************************************************/
+
 		public AppShell()
-        {
-            InitializeComponent();
+		{
+			InitializeComponent();
 			UserNameLabel.Text = _userId =  Preferences.Get("user_id", "");
 			this.BindingContext = this;
 		}
@@ -21,111 +59,60 @@ namespace WebSocketClient
 			base.OnAppearing();
 		}
 
+		protected override bool OnBackButtonPressed()
+		{
+			if (Navigation.NavigationStack.Count == 0)
+			{
+				AppShell.CloseApp();
+				return true;
+			}
+			else
+				return base.OnBackButtonPressed();
+		}
+
 		private async void OnLogoutButtonClicked(object sender, EventArgs e)
 		{
 			await BaeWebSocketClient.Disconnect();
 		}
 
-		private async void OnSettingPageButtonClicked(object sender, EventArgs e)
+		private void OnExitButtonClicked(object sender, EventArgs e)
 		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is SettingPage);
-			if (existingPage != null)
-			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
-			}
-			else
-				await Navigation.PushAsync(new SettingPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
+			CloseApp();
 		}
 
-		/************************************************************************************************************/
-
-		private async void OnLevelerPageButtonClicked(object sender, EventArgs e)
+		private void OnNavigateButtonClicked(object sender, EventArgs e)
 		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is LevelerPage);
-			if (existingPage != null)
+			if (sender is not Button btn) return;
+
+			switch (btn.StyleId)
 			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
+				case "SettingPageButton":
+					NavigateToPage<SettingPage>();
+					break;
+
+				case "LevelerPageButton":
+					NavigateToPage<LevelerPage>();
+					break;
+
+				case "LocationAlertPageButton":
+					NavigateToPage<LocationAlertPage>();
+					break;
+
+				case "StockChartPageButton":
+					NavigateToPage<StockChartPage>();
+					break;
+
+				case "StockCollectionManagerPageButton":
+					NavigateToPage<StockCollectionManagerPage>();
+					break;
+
+				case "WolPageButton":
+					NavigateToPage<WolPage>();
+					break;
+
+				default:
+					return; // 정의되지 않은 버튼은 처리하지 않음
 			}
-			else
-				await Navigation.PushAsync(new LevelerPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
-		}
-
-		private async void OnLocationAlertPageButtonClicked(object sender, EventArgs e)
-		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is LocationAlertPage);
-			if (existingPage != null)
-			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
-			}
-			else
-				await Navigation.PushAsync(new LocationAlertPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
-		}
-
-		/************************************************************************************************************/
-
-		private async void OnStockChartPageButtonClicked(object sender, EventArgs e)
-		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is StockChartPage);
-			if (existingPage != null)
-			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
-			}
-			else
-				await Navigation.PushAsync(new StockChartPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
-		}
-
-		private async void OnStockCollectionManagerPageButtonClicked(object sender, EventArgs e)
-		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is StockCollectionManagerPage);
-			if (existingPage != null)
-			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
-			}
-			else
-				await Navigation.PushAsync(new StockCollectionManagerPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
-		}
-
-		/************************************************************************************************************/
-
-		private async void OnWolPageButtonClicked(object sender, EventArgs e)
-		{
-			var existingPage = Navigation.NavigationStack.FirstOrDefault(page => page is WolPage);
-			if (existingPage != null)
-			{
-				Navigation.RemovePage(existingPage);
-				await Navigation.PushAsync(existingPage);
-			}
-			else
-				await Navigation.PushAsync(new WolPage());
-
-			Shell.Current.FlyoutIsPresented = false;
-			while (Navigation.NavigationStack.Count > _maxStackDepth)
-				Navigation.RemovePage(Navigation.NavigationStack.First());
 		}
 	}
 }
