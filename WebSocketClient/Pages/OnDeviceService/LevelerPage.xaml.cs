@@ -1,7 +1,7 @@
 using Microsoft.Maui.Layouts;
 using System.Numerics;
 
-namespace WebSocketClient.Pages;
+namespace WebSocketClient.Pages.OnDeviceService;
 
 public partial class LevelerPage : ContentPage
 {

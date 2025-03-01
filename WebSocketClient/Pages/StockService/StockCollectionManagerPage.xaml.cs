@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using WebSocketClient.Classes;
 using WebSocketClient.Views;
 
-namespace WebSocketClient.Pages;
+namespace WebSocketClient.Pages.StockService;
 
 
 
@@ -256,9 +256,6 @@ public partial class StockCollectionManagerPage : ContentPage
 		}
 		ItemListView.Reload();
 	}
-
-
-
 
 	private async void OnExecuteClicked(object sender, EventArgs e)
 	{

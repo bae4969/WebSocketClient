@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 using WebSocketClient.Classes;
 using RecvFuncType = System.Func<Newtonsoft.Json.Linq.JObject, System.Threading.Tasks.Task>;
 
-namespace WebSocketClient.Pages;
+namespace WebSocketClient.Pages.PrivateService;
 
 public partial class WolPage : ContentPage
 {

@@ -3,12 +3,15 @@ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using OxyPlot.Maui.Skia;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using WebSocketClient.Pages.OnDeviceService;
+
 #if WINDOWS
 using Microsoft.UI; // WinUI 네임스페이스
 using Microsoft.UI.Windowing; // 창 크기 설정을 위한 네임스페이스
 using Windows.Graphics; // 창 크기 조정에 필요한 네임스페이스
 #endif
-
 namespace WebSocketClient
 {
 	public static class MauiProgram
@@ -20,8 +23,11 @@ namespace WebSocketClient
 				.UseMauiApp<App>()
 				.UseSkiaSharp(true)
 				.UseOxyPlotSkia()
-				.ConfigureFonts(fonts =>
-				{
+				.UseMauiCommunityToolkit()
+				.UseMauiCommunityToolkitCore()
+				.UseMauiCommunityToolkitCamera()
+				.UseMauiCommunityToolkitMediaElement()
+				.ConfigureFonts(fonts => {
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				});
@@ -45,7 +51,6 @@ namespace WebSocketClient
 #if DEBUG
 			builder.Logging.AddDebug();
 #endif
-
 			return builder.Build();
 		}
 	}

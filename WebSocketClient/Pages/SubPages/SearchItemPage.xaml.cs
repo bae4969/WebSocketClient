@@ -2,7 +2,7 @@ using NetTopologySuite.Index.HPRtree;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace WebSocketClient.Pages;
+namespace WebSocketClient.Pages.SubPages;
 
 public partial class SearchItemPage : ContentPage
 {

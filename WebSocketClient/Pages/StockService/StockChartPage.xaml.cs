@@ -6,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using WebSocketClient.Classes;
 using WebSocketClient.Views;
+using WebSocketClient.Pages.SubPages;
 
-namespace WebSocketClient.Pages;
+
+namespace WebSocketClient.Pages.StockService;
 
 
 public partial class StockChartPage : ContentPage
@@ -86,7 +88,7 @@ public partial class StockChartPage : ContentPage
 			{
 				{ "table_type", _lastSelected.table_type },
 				{ "target_code", _lastSelected.stock_code },
-				{ "year", 2024 },
+				{ "year", 2025 },
 				{ "week_from", 1 },
 				{ "week_to", 53 },
 			},

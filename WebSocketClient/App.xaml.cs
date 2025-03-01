@@ -7,7 +7,7 @@ namespace WebSocketClient
         public App()
         {
             InitializeComponent();
-
+			App.Current.UserAppTheme = AppTheme.Unspecified;
 			MainPage = new NavigationPage(new LoginPage(true));
 		}
     }

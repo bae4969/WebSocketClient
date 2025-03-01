@@ -19,6 +19,7 @@ namespace WebSocketClient.Classes
 		private static CancellationTokenSource _cancel_source = new();
 		private static ConcurrentDictionary<string, RecvFuncType?> _wait_service = new();
 		private static bool _is_logined = false;
+		private static string _login_hash = string.Empty;
 
 		// WebSocket 연결 함수
 		[Obsolete]
@@ -45,18 +46,17 @@ namespace WebSocketClient.Classes
 
 					if (ret_code == 200)
 					{
+						_login_hash = recv_msg["data"]["login_hash"].ToString();
 						_ = FuncPingLoop();
 						Preferences.Set("user_id", id);
 						Preferences.Set("user_pw", pw);
 						Preferences.Set("is_auto_login", isAutoLogin);
-						Device.BeginInvokeOnMainThread(() =>
-						{
-							Application.Current.MainPage = new AppShell();
-						});
+						Device.BeginInvokeOnMainThread(() => { Application.Current.MainPage = new AppShell(); });
 						_is_logined = true;
 					}
 					else
 					{
+						_login_hash = string.Empty;
 						_is_logined = false;
 						await Application.Current.MainPage.DisplayAlert("Error", $"Fail to connect ({ret_msg})", "OK");
 					}
@@ -71,6 +71,7 @@ namespace WebSocketClient.Classes
 		}
 
 		// WebSocket 닫기
+		[Obsolete]
 		public static async Task Disconnect()
 		{
 			_cancel_source.Cancel();
@@ -92,14 +93,16 @@ namespace WebSocketClient.Classes
 
 			if (_is_logined)
 			{
+				_login_hash = string.Empty;
 				_is_logined = false;
 				await Application.Current.MainPage.DisplayAlert("Error", $"Disconnected with server", "OK");
-				Application.Current.MainPage = new NavigationPage(new LoginPage());
+				Device.BeginInvokeOnMainThread(() => { Application.Current.MainPage = new NavigationPage(new LoginPage()); });
 			}
 		}
 
 
 		// 주기적으로 Ping을 보내는 함수
+		[Obsolete]
 		private static async Task FuncPingLoop()
 		{
 			var cancel_token = _cancel_source.Token;
@@ -110,6 +113,7 @@ namespace WebSocketClient.Classes
 				{ "work", "ping" },
 				{ "data", new JObject() }
 			};
+			ping_dict["data"]["login_hash"] = _login_hash;
 
 			while (_ws.State == WebSocketState.Open && !cancel_token.IsCancellationRequested)
 			{
@@ -188,6 +192,7 @@ namespace WebSocketClient.Classes
 					{ "work", work_name },
 					{ "data", req_dict }
 				};
+				jsonObject["data"]["login_hash"] = _login_hash;
 				var encoded_msg = Encoding.UTF8.GetBytes(jsonObject.ToString());
 				var buffer = new ArraySegment<byte>(encoded_msg, 0, encoded_msg.Length);
 				await _ws.SendAsync(buffer, WebSocketMessageType.Text, true, cancel_token);

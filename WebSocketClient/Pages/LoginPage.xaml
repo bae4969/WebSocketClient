@@ -21,7 +21,6 @@
                Margin="0, 0, 0, 30" />
 
 		<Frame Grid.Row="1"
-               BackgroundColor="#1C1C1C"
                CornerRadius="10"
                HasShadow="False"
                Padding="10"
@@ -33,7 +32,6 @@
 		</Frame>
 
 		<Frame Grid.Row="2"
-               BackgroundColor="#1C1C1C"
                CornerRadius="10"
                HasShadow="False"
                Padding="10"

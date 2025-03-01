@@ -3,6 +3,10 @@ using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.ComponentModel;
 using WebSocketClient.Classes;
 using WebSocketClient.Pages;
+using WebSocketClient.Pages.OnDeviceService;
+using WebSocketClient.Pages.PrivateService;
+using WebSocketClient.Pages.StockService;
+
 
 namespace WebSocketClient
 {
@@ -92,6 +96,10 @@ namespace WebSocketClient
 
 				case "LevelerPageButton":
 					NavigateToPage<LevelerPage>();
+					break;
+
+				case "StereoCameraPageButton":
+					NavigateToPage<StereoCameraPage>();
 					break;
 
 				case "LocationAlertPageButton":

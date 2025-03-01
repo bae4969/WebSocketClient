@@ -8,7 +8,7 @@
 	Title="WebSocketClient">
 
 	<Shell.FlyoutHeader>
-		<VerticalStackLayout Padding="10" BackgroundColor="#333333">
+		<VerticalStackLayout Padding="10">
 
 			<Grid Margin="10" 
 					ColumnSpacing="5"
@@ -24,7 +24,7 @@
 				<Label
 					x:Name="UserNameLabel"
 					Grid.Column="0"
-					Margin="10"
+					Margin="10" 
 					FontSize="23"
 					HorizontalOptions="Start"
 					VerticalOptions="Center" />
@@ -35,6 +35,7 @@
 					Padding="2" 
 					Margin="0"
 					HeightRequest="40"
+					BackgroundColor="#AFAFAF"
 					HorizontalOptions="Center"
 					VerticalOptions="Center"
 					ImageSource="setting_icon.png"
@@ -46,6 +47,7 @@
 					Padding="2" 
 					Margin="0"
 					HeightRequest="40"
+					BackgroundColor="#AFAFAF"
 					HorizontalOptions="Center"
 					VerticalOptions="Center"
 					ImageSource="logout_icon.png"
@@ -57,6 +59,7 @@
 					Padding="2" 
 					Margin="0"
 					HeightRequest="40"
+					BackgroundColor="#AFAFAF"
 					HorizontalOptions="Center"
 					VerticalOptions="Center"
 					ImageSource="exit_icon.png"
@@ -81,7 +84,7 @@
 					x:Name="LevelerPageButton"
 					Text="Leveler"
 					HorizontalOptions="Start"
-					TextColor="White"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
 					BackgroundColor="Transparent"
 					Clicked="OnNavigateButtonClicked"/>
 
@@ -89,7 +92,15 @@
 					x:Name="LocationAlertPageButton"
 					Text="Location Alert"
 					HorizontalOptions="Start"
-					TextColor="White"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
+					BackgroundColor="Transparent"
+					Clicked="OnNavigateButtonClicked"/>
+
+				<Button
+					x:Name="StereoCameraPageButton"
+					Text="Stereo Camera"
+					HorizontalOptions="Start"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
 					BackgroundColor="Transparent"
 					Clicked="OnNavigateButtonClicked"/>
 
@@ -112,7 +123,7 @@
 					x:Name="StockChartPageButton"
 					Text="Stock Chart"
 					HorizontalOptions="Start"
-					TextColor="White"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
 					BackgroundColor="Transparent"
 					Clicked="OnNavigateButtonClicked"/>
 
@@ -120,7 +131,7 @@
 					x:Name="StockCollectionManagerPageButton"
 					Text="Stock Collection Manager"
 					HorizontalOptions="Start"
-					TextColor="White"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
 					BackgroundColor="Transparent"
 					Clicked="OnNavigateButtonClicked"/>
 
@@ -143,7 +154,7 @@
 					x:Name="WolPageButton"
 					Text="Wake on Lan"
 					HorizontalOptions="Start"
-					TextColor="White"
+					TextColor="{AppThemeBinding Light=Black, Dark=White}"
 					BackgroundColor="Transparent"
 					Clicked="OnNavigateButtonClicked"/>
 
