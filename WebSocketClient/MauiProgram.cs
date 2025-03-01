@@ -6,6 +6,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using WebSocketClient.Pages.OnDeviceService;
+using WebSocketClient.Views;
 
 #if WINDOWS
 using Microsoft.UI; // WinUI 네임스페이스
@@ -30,10 +31,14 @@ namespace WebSocketClient
 				.ConfigureFonts(fonts => {
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				});
-
-			builder.ConfigureLifecycleEvents(events =>
-			{
+				})
+				.ConfigureMauiHandlers(handlers =>
+				{
+#if ANDROID
+					handlers.AddHandler(typeof(StereoCameraView), typeof(StereoCameraViewHandler));
+#endif
+				})
+				.ConfigureLifecycleEvents(events => {
 #if WINDOWS
 				events.AddWindows(windows =>
 				{
@@ -47,7 +52,8 @@ namespace WebSocketClient
 					});
 				});
 #endif
-			});
+				});
+
 #if DEBUG
 			builder.Logging.AddDebug();
 #endif
